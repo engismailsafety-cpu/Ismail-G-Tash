@@ -1,6 +1,3 @@
-# ============================================
-# FILE: report_generator.py
-# ============================================
 from fpdf import FPDF
 import pandas as pd
 from datetime import datetime
@@ -14,14 +11,12 @@ class PDFReportGenerator:
         self.pdf = FPDF()
         self.pdf.add_page()
         
-        # Title
         self.pdf.set_font("Arial", "B", 16)
         self.pdf.cell(0, 10, "Sustainability Report", ln=True, align="C")
         self.pdf.set_font("Arial", "I", 10)
         self.pdf.cell(0, 10, f"Generated: {results['timestamp']}", ln=True, align="C")
         self.pdf.ln(10)
         
-        # Team Information
         self.pdf.set_font("Arial", "B", 12)
         self.pdf.cell(0, 10, "Team Information", ln=True)
         self.pdf.set_font("Arial", "", 10)
@@ -30,7 +25,6 @@ class PDFReportGenerator:
         self.pdf.cell(0, 6, "Program: QHSE Master - Alexandria University", ln=True)
         self.pdf.ln(5)
         
-        # Executive Summary
         self.pdf.set_font("Arial", "B", 12)
         self.pdf.cell(0, 10, "Executive Summary", ln=True)
         self.pdf.set_font("Arial", "", 10)
@@ -40,7 +34,6 @@ class PDFReportGenerator:
         self.pdf.multi_cell(0, 6, summary)
         self.pdf.ln(5)
         
-        # Key Metrics Table
         self.pdf.set_font("Arial", "B", 12)
         self.pdf.cell(0, 10, "Key Performance Indicators", ln=True)
         
@@ -66,7 +59,6 @@ class PDFReportGenerator:
         
         self.pdf.ln(5)
         
-        # AI Insights
         self.pdf.set_font("Arial", "B", 12)
         self.pdf.cell(0, 10, "AI Agent Insights & Recommendations", ln=True)
         self.pdf.set_font("Arial", "", 10)
@@ -83,7 +75,6 @@ class PDFReportGenerator:
         
         self.pdf.ln(5)
         
-        # Forecast
         if 'predictions' in results:
             self.pdf.set_font("Arial", "B", 12)
             self.pdf.cell(0, 10, "Sustainability Forecast", ln=True)
@@ -110,12 +101,10 @@ class PDFReportGenerator:
         
         self.pdf.ln(5)
         
-        # Footer
         self.pdf.set_y(-15)
         self.pdf.set_font("Arial", "I", 8)
         self.pdf.cell(0, 10, f"Page {self.pdf.page_no()} | QHSE Master - Alexandria University | AI Sustainability Agent", 0, 0, "C")
         
-        # Save
         output_path = f"sustainability_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
         self.pdf.output(output_path)
         
