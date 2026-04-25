@@ -1,6 +1,3 @@
-# ============================================
-# FILE: sustainability_analysis.py
-# ============================================
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -11,10 +8,10 @@ from datetime import datetime
 class SustainabilityAnalyzer:
     def __init__(self):
         self.emission_factors = {
-            'electricity': 0.4,  # kg CO2e per kWh
-            'natural_gas': 0.2,   # kg CO2e per kWh
-            'water': 0.001,       # kg CO2e per liter
-            'waste': 0.5         # kg CO2e per kg
+            'electricity': 0.4,
+            'natural_gas': 0.2,
+            'water': 0.001,
+            'waste': 0.5
         }
         
     def analyze_all(self, uploaded_files, analysis_types):
@@ -59,7 +56,6 @@ class SustainabilityAnalyzer:
                     if 'emissions' in df.columns:
                         results['emissions_data'] = df['emissions'].resample('M').sum()
         
-        # Calculate derived metrics
         if results['energy_total'] > 0:
             results['carbon_intensity'] = (results['co2_total'] / results['energy_total']) * 1000
             results['energy_efficiency'] = 100 - (results['carbon_intensity'] / 500 * 100)
@@ -75,18 +71,15 @@ class SustainabilityAnalyzer:
             return pd.read_excel(file)
     
     def generate_predictions(self, forecast_years):
-        # Generate historical data
         years_hist = np.arange(2020, 2025).reshape(-1, 1)
         energy_hist = np.array([150, 165, 180, 200, 215])
         emissions_hist = energy_hist * 0.4
         
-        # Train models
         energy_model = LinearRegression()
         emissions_model = LinearRegression()
         energy_model.fit(years_hist, energy_hist)
         emissions_model.fit(years_hist, emissions_hist)
         
-        # Forecast
         future_years = np.arange(2025, 2025 + forecast_years).reshape(-1, 1)
         energy_forecast = energy_model.predict(future_years)
         emissions_forecast = emissions_model.predict(future_years)
