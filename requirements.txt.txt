@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+plotly
+scikit-learn
+transformers
+torch
+Pillow
+PyPDF2
+python-docx
+fpdf
