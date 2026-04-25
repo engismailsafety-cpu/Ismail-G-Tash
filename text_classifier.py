@@ -1,6 +1,3 @@
-# ============================================
-# FILE: text_classifier.py
-# ============================================
 import PyPDF2
 from docx import Document
 import re
@@ -18,7 +15,7 @@ class TextClassifier:
         
         self.sentiment_keywords = {
             'positive': ['improved', 'reduced', 'achieved', 'success', 'target met', 'exceeded'],
-            'negative': ['increase', violation, 'failure', 'exceeded limit', 'non-compliance']
+            'negative': ['increase', 'violation', 'failure', 'exceeded limit', 'non-compliance']
         }
     
     def classify_documents(self, doc_files):
@@ -30,19 +27,16 @@ class TextClassifier:
             if not text:
                 continue
             
-            # GRI scoring
             gri_scores = {}
             for standard, keywords in self.gri_keywords.items():
                 score = sum(text.lower().count(keyword) for keyword in keywords)
                 gri_scores[standard] = min(1.0, score / 20)
             
-            # Extract key phrases
             words = re.findall(r'\b\w+\b', text.lower())
             word_freq = Counter(words)
             common_words = word_freq.most_common(20)
             key_phrases = [word for word, count in common_words if len(word) > 3 and count > 1][:15]
             
-            # Sentiment analysis
             sentiment_score = 0
             for sentiment, keywords in self.sentiment_keywords.items():
                 for keyword in keywords:
@@ -67,7 +61,7 @@ class TextClassifier:
             if doc_file.name.endswith('.pdf'):
                 pdf_reader = PyPDF2.PdfReader(doc_file)
                 for page in pdf_reader.pages:
-                    text += page.extract_text()
+                    text += page.extract_text() or ""
             elif doc_file.name.endswith('.docx'):
                 doc = Document(doc_file)
                 for paragraph in doc.paragraphs:
